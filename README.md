@@ -1,2 +1,2 @@
 # android-base
-Android base library.
+Base library for Android

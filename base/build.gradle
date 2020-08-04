@@ -1,0 +1,110 @@
+apply plugin: 'com.android.library'
+apply plugin: 'maven-publish'
+
+ext {
+    moduleName = 'SKTLab Android Base Library'
+    moduleGroupId = 'com.sktlab.android'
+    moduleArtifactId = 'base'
+    moduleVersion = '1.0.0'
+    moduleVersionCode = 100
+    moduleDescription = 'SKTLab Base Library for Android'
+    moduleUrl = 'https://github.com/SKTLab/android-base'
+    moduleDeveloperId = 'KunNiu'
+    moduleDeveloperName = 'Nick Niu'
+    moduleDeveloperEmail = 'kun.niu@sktlab.com'
+}
+
+task sourcesJar(type: Jar) {
+    from android.sourceSets.main.java.srcDirs
+    classifier 'sources'
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            groupId = moduleGroupId
+            artifactId = moduleArtifactId
+            version = moduleVersion
+            artifact sourcesJar
+            artifact "$buildDir/outputs/aar/base-debug.aar"
+
+            pom {
+                name = moduleName
+                description = moduleDescription
+                url = moduleUrl
+                licenses {
+                    license {
+                        name = 'The Apache License, Version 2.0'
+                        url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+                developers {
+                    developer {
+                        id = moduleDeveloperId
+                        name = moduleDeveloperName
+                        email = moduleDeveloperEmail
+                    }
+                }
+                scm {
+                    url = moduleUrl
+                    connection = moduleUrl
+                    developerConnection = moduleUrl
+                }
+            }
+        }
+    }
+    repositories{
+        maven {
+            url =
+            // 仓库用户名密码
+            credentials {
+                username = "root"
+                password = "root"
+            }
+        }
+    }
+}
+
+android {
+    compileSdkVersion build_versions.compile_sdk
+    buildToolsVersion build_versions.build_tools
+
+    defaultConfig {
+        minSdkVersion build_versions.min_sdk
+        targetSdkVersion build_versions.target_sdk
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    buildFeatures {
+        viewBinding = true
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: "libs", include: ["*.jar"])
+    testImplementation deps.junit
+    androidTestImplementation deps.android_test.ext
+    androidTestImplementation deps.android_test.espresso
+
+    implementation deps.lifecycle.extensions
+    implementation deps.lifecycle.runtime
+    implementation deps.appcompat
+    implementation deps.recyclerview
+    implementation deps.eventbus
+    implementation deps.butterknife.butterknife
+//    api deps.bouncycastle
+}
