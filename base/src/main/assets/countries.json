@@ -1,0 +1,16 @@
+[
+  {
+    "code": 86,
+    "tw": "中國",
+    "en": "China",
+    "locale": "CN",
+    "zh": "中国"
+  },
+  {
+    "code": 1,
+    "tw": "美國",
+    "en": "United States",
+    "locale": "US",
+    "zh": "美国"
+  }
+]

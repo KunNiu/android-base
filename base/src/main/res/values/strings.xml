@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="success">Successful</string>
+    <string name="failed">Failed</string>
+    <string name="unknown">Unknown error</string>
+    <string name="search">Search</string>
+    <string name="loading">Loading&#8230;</string>
+</resources>

@@ -9,9 +9,10 @@ import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-public class CipherUtil {
-    private static final int DEFAULT_FLAG = Base64.URL_SAFE | Base64.NO_WRAP;
-//    private static final int DEFAULT_FLAG = Base64.NO_WRAP;
+public class Cipher {
+//    private static final int DEFAULT_FLAG = Base64.URL_SAFE | Base64.NO_WRAP;
+    private static final int DEFAULT_FLAG = Base64.NO_WRAP;
+//    private static final int DEFAULT_FLAG = Base64.CRLF;
 //    private static final int DEFAULT_FLAG = Base64.URL_SAFE;
 //    private static final int DEFAULT_FLAG = Base64.DEFAULT;
 

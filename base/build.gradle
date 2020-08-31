@@ -5,8 +5,8 @@ ext {
     moduleName = 'SKTLab Android Base Library'
     moduleGroupId = 'com.sktlab.android'
     moduleArtifactId = 'base'
-    moduleVersion = '1.0.0'
-    moduleVersionCode = 100
+    moduleVersion = '1.0.1'
+    moduleVersionCode = 101
     moduleDescription = 'SKTLab Base Library for Android'
     moduleUrl = 'https://github.com/SKTLab/android-base'
     moduleDeveloperId = 'KunNiu'
@@ -20,6 +20,8 @@ task sourcesJar(type: Jar) {
 }
 
 publishing {
+    def repo_username = project.properties.BintrayUserName
+    def repo_password = project.properties.BintrayApiKey
     publications {
         maven(MavenPublication) {
             groupId = moduleGroupId
@@ -53,16 +55,6 @@ publishing {
             }
         }
     }
-    repositories{
-        maven {
-            url =
-            // 仓库用户名密码
-            credentials {
-                username = "root"
-                password = "root"
-            }
-        }
-    }
 }
 
 android {
@@ -77,14 +69,16 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
+        multiDexEnabled true
     }
 
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-        }
-    }
+//    buildTypes {
+//        release {
+//            minifyEnabled false
+//            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+//        }
+//    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -106,5 +100,15 @@ dependencies {
     implementation deps.recyclerview
     implementation deps.eventbus
     implementation deps.butterknife.butterknife
+    implementation deps.pinyin
+    implementation deps.gson
+    implementation deps.okhttp.okhttp
+    implementation deps.okhttp.logging_interceptor
+    api deps.glide.glide
+    annotationProcessor deps.glide.compiler
+    api deps.glide.transformations
+    implementation deps.matisse
+    api deps.viewpager2
+
 //    api deps.bouncycastle
 }

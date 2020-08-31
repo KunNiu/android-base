@@ -13,6 +13,8 @@ android {
         buildConfigField "String", "APP_NAME", "\"Sample\""
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        multiDexEnabled true
     }
     buildTypes {
         debug {
@@ -30,12 +32,13 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'com.sktlab.android:base:1.0.0'
+    implementation 'com.sktlab.android:base:1.0.1'
     testImplementation deps.junit
     androidTestImplementation deps.android_test.ext
     androidTestImplementation deps.android_test.espresso
 
-//    implementation deps.constraintlayout
+    implementation deps.appcompat
+    implementation deps.constraintlayout
 //    implementation deps.material
 //    implementation deps.cardview
     implementation deps.fragment
@@ -43,10 +46,10 @@ dependencies {
     implementation deps.okhttp.okhttp
     implementation deps.okhttp.logging_interceptor
     implementation deps.gson
-    implementation deps.apache_commons
+    implementation deps.apache_commons.lang
 //    implementation deps.glide.glide
 //    annotationProcessor deps.glide.compiler
 //    implementation deps.butterknife.butterknife
 //    annotationProcessor deps.butterknife.compiler
-
+    implementation 'com.android.support:multidex:1.0.3'
 }
