@@ -8,13 +8,12 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public abstract class HeaderFooterAdapter<T> extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final int TYPE_HEADER = 0;
     private static final int TYPE_ITEM = 1;
     private static final int TYPE_FOOTER = 2;
-    private List<T> data;
+    protected ArrayList<T> data;
 
     private boolean withHeader;
     private boolean withFooter;
@@ -38,7 +37,7 @@ public abstract class HeaderFooterAdapter<T> extends RecyclerView.Adapter<Recycl
         this.onHeaderClickListener = onHeaderClickListener;
     }
 
-    public HeaderFooterAdapter(List<T> data, boolean withHeader, boolean withFooter) {
+    public HeaderFooterAdapter(ArrayList<T> data, boolean withHeader, boolean withFooter) {
         this.data = data;
         this.withHeader = withHeader;
         this.withFooter = withFooter;
@@ -50,7 +49,7 @@ public abstract class HeaderFooterAdapter<T> extends RecyclerView.Adapter<Recycl
         this.withFooter = withFooter;
     }
 
-    public void setData(List<T> data) {
+    public void setData(ArrayList<T> data) {
         if (data == null)
             this.data = new ArrayList<>();
         else

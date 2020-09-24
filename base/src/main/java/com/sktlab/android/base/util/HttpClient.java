@@ -17,9 +17,7 @@ public class HttpClient {
 
     public static OkHttpClient.Builder newClient() {
         return new OkHttpClient.Builder()
-                .followRedirects(false)
-                .followSslRedirects(false)
-                .addNetworkInterceptor(new HttpLoggingInterceptor(message -> {
+                .addInterceptor(new HttpLoggingInterceptor(message -> {
                     if (message.length() > MAX_LOG_LENGTH) {
                         int chunkCount = message.length() / MAX_LOG_LENGTH;
                         for (int i = 0; i <= chunkCount; i++) {

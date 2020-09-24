@@ -13,12 +13,12 @@ public abstract class BaseAdapter<T extends ViewBinding> extends RecyclerView.Ad
     public BaseViewHolder<T> onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         T binding = getBinding(inflater);
-        return new BaseViewHolder(binding);
+        return new BaseViewHolder<>(binding);
     }
 
     @Override
     public void onBindViewHolder(@NonNull BaseViewHolder holder, int position) {
-        holder.setIsRecyclable(false);
+//        holder.setIsRecyclable(false);
         onBindViewHolder((T) holder.binding, position);
     }
 

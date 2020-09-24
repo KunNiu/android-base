@@ -110,7 +110,31 @@ public abstract class BaseFragment<T extends ViewBinding> extends Fragment {
     }
 
     public void startActivity(Class<?> cls) {
-        super.startActivity(new Intent(getActivity(), cls));
+        this.startActivity(cls, null);
+    }
+
+    public void startActivity(Class<?> cls, Bundle bundle) {
+        Intent intent = new Intent(getActivity(), cls);
+        if (null != bundle) {
+            intent.putExtra("bundle", bundle);
+        }
+        super.startActivity(intent);
+    }
+
+    public void startActivityForResult(Class<?> cls, int requestCode) {
+        this.startActivityForResult(cls, requestCode, null);
+    }
+
+    public void startActivityForResult(Class<?> cls, int requestCode, Bundle bundle) {
+        Intent intent = new Intent(getActivity(), cls);
+        if (null != bundle) {
+            intent.putExtra("bundle", bundle);
+        }
+        super.startActivityForResult(intent, requestCode);
+    }
+
+    public Bundle getBundle() {
+        return getActivity().getIntent().getBundleExtra("bundle");
     }
 
     public void showLoading() {
@@ -152,6 +176,7 @@ public abstract class BaseFragment<T extends ViewBinding> extends Fragment {
         if (loadingDialog != null && loadingDialog.isShowing())
             loadingDialog.dismiss();
     }
+
     public void finishActivity() {
         requireActivity().finish();
     }

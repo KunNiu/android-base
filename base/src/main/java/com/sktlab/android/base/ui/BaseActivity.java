@@ -100,7 +100,31 @@ public abstract class BaseActivity<T extends ViewBinding> extends AppCompatActiv
     }
 
     public void startActivity(Class<?> cls) {
-        super.startActivity(new Intent(this, cls));
+        this.startActivity(cls, null);
+    }
+
+    public void startActivity(Class<?> cls, Bundle bundle) {
+        Intent intent = new Intent(this, cls);
+        if (null != bundle) {
+            intent.putExtra("bundle", bundle);
+        }
+        super.startActivity(intent);
+    }
+
+    public void startActivityForResult(Class<?> cls, int requestCode) {
+        this.startActivityForResult(cls, requestCode, null);
+    }
+
+    public void startActivityForResult(Class<?> cls, int requestCode, Bundle bundle) {
+        Intent intent = new Intent(this, cls);
+        if (null != bundle) {
+            intent.putExtra("bundle", bundle);
+        }
+        super.startActivityForResult(intent, requestCode);
+    }
+
+    public Bundle getBundle() {
+        return getIntent().getBundleExtra("bundle");
     }
 
     public void showLoading() {

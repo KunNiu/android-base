@@ -5,15 +5,19 @@ import android.util.DisplayMetrics;
 import android.util.TypedValue;
 
 import androidx.annotation.ColorInt;
+import androidx.annotation.StringRes;
 import androidx.core.graphics.ColorUtils;
+
+import com.google.i18n.phonenumbers.NumberParseException;
+import com.google.i18n.phonenumbers.PhoneNumberUtil;
+import com.google.i18n.phonenumbers.Phonenumber;
+import com.sktlab.android.base.R;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.net.FileNameMap;
 import java.net.URLConnection;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import okhttp3.MediaType;
 
@@ -21,13 +25,6 @@ public class Utils {
     public static float dpToPx(Context context, float valueInDp) {
         DisplayMetrics metrics = context.getResources().getDisplayMetrics();
         return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, valueInDp, metrics);
-    }
-
-    public static boolean validatePassword(String password) {
-        String regex = "^(?![0-9])(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,12}$";
-        Pattern p = Pattern.compile(regex);
-        Matcher m = p.matcher(password);
-        return m.matches();
     }
 
     public static boolean isLightColor(@ColorInt int color) {
@@ -73,5 +70,69 @@ public class Utils {
             }
         }
         return data;
+    }
+
+    public static boolean isPhoneNumberValid(String phoneNumber, String countryCode) {
+        PhoneNumberUtil phoneNumberUtil = PhoneNumberUtil.getInstance();
+        try {
+            Phonenumber.PhoneNumber numberProto = phoneNumberUtil.parse(phoneNumber, countryCode);
+            return phoneNumberUtil.isValidNumber(numberProto);
+        } catch (NumberParseException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public static String numberSimplify(int number) {
+        if (number < 1000) {
+            return String.valueOf(number);
+        }
+        if (number < 10000) {
+            return String.format("%.1f", number / 1000f) + "K";
+        }
+        return String.format("%.1f", number / 10000f) + "W";
+    }
+
+    public static class TimeAgo {
+        private int ago;
+        @StringRes
+        private int unitRes;
+
+        TimeAgo(int ago, int unitRes) {
+            this.ago = ago;
+            this.unitRes = unitRes;
+        }
+
+        public int getAgo() {
+            return ago;
+        }
+
+        public int getUnitRes() {
+            return unitRes;
+        }
+    }
+
+    public static TimeAgo howLongAgo(long timestamp) {
+        long current = System.currentTimeMillis() / 1000;
+        long ago = current - timestamp;
+        if (ago < 60) {
+            return new TimeAgo((int) ago, R.string.second);
+        }
+        if (ago < 60 * 60) {
+            return new TimeAgo((int) ago / 60, R.string.minute);
+        }
+        if (ago < 60 * 60 * 24) {
+            return new TimeAgo((int) ago / 60 / 60, R.string.hour);
+        }
+        if (ago < 60 * 60 * 24 * 7) {
+            return new TimeAgo((int) ago / 60 / 60 / 24, R.string.day);
+        }
+        if (ago < 60 * 60 * 24 * 7 * 4) {
+            return new TimeAgo((int) ago / 60 / 60 / 24 / 7, R.string.week);
+        }
+        if (ago < 60 * 60 * 24 * 7 * 4 * 12) {
+            return new TimeAgo((int) ago / 60 / 60 / 24 / 7 / 4, R.string.month);
+        }
+        return new TimeAgo((int) ago / 60 / 60 / 24 / 7 / 4 / 12, R.string.year);
     }
 }

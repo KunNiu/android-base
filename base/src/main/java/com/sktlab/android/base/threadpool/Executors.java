@@ -52,7 +52,7 @@ public class Executors {
         if (networkIO == null) {
             synchronized (LOCK) {
                 if (networkIO == null) {
-                    networkIO = java.util.concurrent.Executors.newFixedThreadPool(3);
+                    networkIO = java.util.concurrent.Executors.newSingleThreadExecutor();
                 }
             }
         }

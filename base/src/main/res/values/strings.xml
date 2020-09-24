@@ -5,4 +5,11 @@
     <string name="unknown">Unknown error</string>
     <string name="search">Search</string>
     <string name="loading">Loading&#8230;</string>
+    <string name="second">seconds</string>
+    <string name="minute">minutes</string>
+    <string name="hour">hours</string>
+    <string name="day">days</string>
+    <string name="week">weeks</string>
+    <string name="month">months</string>
+    <string name="year">years</string>
 </resources>

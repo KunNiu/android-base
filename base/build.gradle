@@ -30,27 +30,39 @@ publishing {
             artifact sourcesJar
             artifact "$buildDir/outputs/aar/base-debug.aar"
 
-            pom {
-                name = moduleName
-                description = moduleDescription
-                url = moduleUrl
-                licenses {
-                    license {
-                        name = 'The Apache License, Version 2.0'
-                        url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+            pom.withXml {
+                def dependenciesNode = asNode().appendNode('dependencies')
+                configurations.implementation.allDependencies.each { dependency ->
+                    if (dependency.group?.trim()) {
+                        def dependencyNode = dependenciesNode.appendNode('dependency')
+                        dependencyNode.appendNode('groupId', dependency.group)
+                        dependencyNode.appendNode('artifactId', dependency.name)
+                        dependencyNode.appendNode('version', dependency.version)
                     }
                 }
-                developers {
-                    developer {
-                        id = moduleDeveloperId
-                        name = moduleDeveloperName
-                        email = moduleDeveloperEmail
+                asNode().children().last() + {
+                    resolveStrategy = Closure.DELEGATE_FIRST
+                    name moduleName
+                    description moduleDescription
+                    url moduleUrl
+                    scm {
+                        url moduleUrl
+                        connection moduleUrl
+                        developerConnection moduleUrl
                     }
-                }
-                scm {
-                    url = moduleUrl
-                    connection = moduleUrl
-                    developerConnection = moduleUrl
+                    licenses {
+                        license {
+                            name 'The Apache License, Version 2.0'
+                            url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                        }
+                    }
+                    developers {
+                        developer {
+                            id moduleDeveloperId
+                            name moduleDeveloperName
+                            email moduleDeveloperEmail
+                        }
+                    }
                 }
             }
         }
@@ -70,6 +82,9 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
         multiDexEnabled true
+        ndk {
+            abiFilters "armeabi-v7a"
+        }
     }
 
 //    buildTypes {
@@ -94,21 +109,28 @@ dependencies {
     androidTestImplementation deps.android_test.ext
     androidTestImplementation deps.android_test.espresso
 
-    implementation deps.lifecycle.extensions
-    implementation deps.lifecycle.runtime
     implementation deps.appcompat
+    implementation deps.fragment
+    implementation deps.phonenumber
+//    implementation (deps.matisse_lxj){
+//        exclude group:'com.github.bumptech.glide'
+//    }
     implementation deps.recyclerview
+    implementation deps.matisse
+    implementation deps.apache_commons.lang
+    implementation deps.apache_commons.validator
     implementation deps.eventbus
     implementation deps.butterknife.butterknife
     implementation deps.pinyin
     implementation deps.gson
     implementation deps.okhttp.okhttp
     implementation deps.okhttp.logging_interceptor
-    api deps.glide.glide
+    implementation deps.glide.glide
     annotationProcessor deps.glide.compiler
-    api deps.glide.transformations
-    implementation deps.matisse
-    api deps.viewpager2
+    implementation deps.glide.transformations
+    implementation deps.viewpager2
+    implementation deps.multitype
+
 
 //    api deps.bouncycastle
 }
