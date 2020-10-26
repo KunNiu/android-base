@@ -16,15 +16,21 @@ public class AppChecker implements Application.ActivityLifecycleCallbacks {
     private static AppChecker instance;
     private static String pkgName;
     private static Set<ComponentName> activities = new HashSet<>();
+    private static LifeMonitor lifeMonitor = null;
 
     private AppChecker() {
     }
 
     static void init(@NonNull Application app) {
+        init(app, null);
+    }
+
+    static void init(@NonNull Application app, LifeMonitor monitor) {
         if (instance == null) {
             synchronized (LOCK) {
                 if (instance == null) {
                     instance = new AppChecker();
+                    lifeMonitor = monitor;
                     pkgName = app.getPackageName();
                     app.registerActivityLifecycleCallbacks(instance);
                 }
@@ -56,6 +62,9 @@ public class AppChecker implements Application.ActivityLifecycleCallbacks {
 
     @Override
     public void onActivityCreated(@NonNull Activity activity, @Nullable Bundle savedInstanceState) {
+        if (activities.isEmpty() && lifeMonitor != null) {
+            lifeMonitor.onLifeBegin();
+        }
         activities.add(activity.getComponentName());
     }
 
@@ -87,5 +96,14 @@ public class AppChecker implements Application.ActivityLifecycleCallbacks {
     @Override
     public void onActivityDestroyed(@NonNull Activity activity) {
         activities.remove(activity.getComponentName());
+        if (activities.isEmpty() && lifeMonitor != null) {
+            lifeMonitor.onLifeEnd();
+        }
+    }
+
+    public interface LifeMonitor {
+        void onLifeBegin();
+
+        void onLifeEnd();
     }
 }

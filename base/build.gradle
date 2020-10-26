@@ -87,12 +87,11 @@ android {
         }
     }
 
-//    buildTypes {
-//        release {
-//            minifyEnabled false
-//            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-//        }
-//    }
+    buildTypes {
+        release {
+            minifyEnabled false
+        }
+    }
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -112,9 +111,6 @@ dependencies {
     implementation deps.appcompat
     implementation deps.fragment
     implementation deps.phonenumber
-//    implementation (deps.matisse_lxj){
-//        exclude group:'com.github.bumptech.glide'
-//    }
     implementation deps.recyclerview
     implementation deps.matisse
     implementation deps.apache_commons.lang
@@ -130,7 +126,4 @@ dependencies {
     implementation deps.glide.transformations
     implementation deps.viewpager2
     implementation deps.multitype
-
-
-//    api deps.bouncycastle
 }

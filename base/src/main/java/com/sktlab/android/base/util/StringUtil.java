@@ -14,13 +14,13 @@ public class StringUtil {
     private static final String REG_MARK = ".*[~!@#$%^&*()_+|<>,.?/:;'\\[\\]{}\"]+.*";
 
     public static boolean validatePassword(@NotNull String password) {
-        Pattern number = Pattern.compile(REG_NUMBER);
-        Pattern letter = Pattern.compile(REG_LETTER);
-        Pattern mark = Pattern.compile(REG_MARK);
-        Matcher mNumber = number.matcher(password);
-        Matcher mLetter = letter.matcher(password);
-        Matcher mMark = mark.matcher(password);
-        return mNumber.matches() && mLetter.matches() && mMark.matches() && password.length() >= 6;
+//        Pattern number = Pattern.compile(REG_NUMBER);
+//        Pattern letter = Pattern.compile(REG_LETTER);
+//        Pattern mark = Pattern.compile(REG_MARK);
+//        Matcher mNumber = number.matcher(password);
+//        Matcher mLetter = letter.matcher(password);
+//        Matcher mMark = mark.matcher(password);
+        return /*mNumber.matches() && mLetter.matches() && mMark.matches() && */password.length() >= 6;
     }
 
     public static boolean isEmpty(final CharSequence cs) {
@@ -33,5 +33,15 @@ public class StringUtil {
 
     public static String substringAfterLast(final String str, final String separator) {
         return StringUtils.substringAfterLast(str, separator);
+    }
+
+    public static String numberSimplify(int number) {
+        if (number < 1000) {
+            return String.valueOf(number);
+        }
+        if (number < 10000) {
+            return String.format("%.1f", number / 1000f) + "K";
+        }
+        return String.format("%.1f", number / 10000f) + "W";
     }
 }

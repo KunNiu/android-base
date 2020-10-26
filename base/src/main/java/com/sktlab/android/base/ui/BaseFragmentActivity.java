@@ -69,4 +69,8 @@ public abstract class BaseFragmentActivity<T extends ViewBinding> extends Fragme
     int getStatusBarColor() {
         return Color.WHITE;
     }
+
+    public Bundle getBundle() {
+        return getIntent().getBundleExtra("bundle");
+    }
 }

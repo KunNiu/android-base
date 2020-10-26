@@ -173,8 +173,12 @@ public abstract class BaseFragment<T extends ViewBinding> extends Fragment {
     }
 
     public void dismissLoading() {
-        if (loadingDialog != null && loadingDialog.isShowing())
+        if (isLoadingShowing())
             loadingDialog.dismiss();
+    }
+
+    public boolean isLoadingShowing() {
+        return loadingDialog != null && loadingDialog.isShowing();
     }
 
     public void finishActivity() {

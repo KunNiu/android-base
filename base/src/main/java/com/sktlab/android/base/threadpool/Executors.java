@@ -52,7 +52,7 @@ public class Executors {
         if (networkIO == null) {
             synchronized (LOCK) {
                 if (networkIO == null) {
-                    networkIO = java.util.concurrent.Executors.newSingleThreadExecutor();
+                    networkIO = java.util.concurrent.Executors.newFixedThreadPool(3);
                 }
             }
         }
@@ -70,7 +70,7 @@ public class Executors {
         return websocketIO;
     }
 
-    public static Executor scheduled() {
+    public static ScheduledExecutorService scheduled() {
         if (scheduledExecutorIO == null) {
             synchronized (LOCK) {
                 if (scheduledExecutorIO == null) {

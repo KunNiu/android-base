@@ -1,12 +1,15 @@
 package com.sktlab.android.base.util;
 
 import android.content.Context;
+import android.graphics.BitmapFactory;
+import android.media.MediaMetadataRetriever;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 
 import androidx.annotation.ColorInt;
 import androidx.annotation.StringRes;
 import androidx.core.graphics.ColorUtils;
+import androidx.core.util.Pair;
 
 import com.google.i18n.phonenumbers.NumberParseException;
 import com.google.i18n.phonenumbers.PhoneNumberUtil;
@@ -83,16 +86,6 @@ public class Utils {
         return false;
     }
 
-    public static String numberSimplify(int number) {
-        if (number < 1000) {
-            return String.valueOf(number);
-        }
-        if (number < 10000) {
-            return String.format("%.1f", number / 1000f) + "K";
-        }
-        return String.format("%.1f", number / 10000f) + "W";
-    }
-
     public static class TimeAgo {
         private int ago;
         @StringRes
@@ -135,4 +128,26 @@ public class Utils {
         }
         return new TimeAgo((int) ago / 60 / 60 / 24 / 7 / 4 / 12, R.string.year);
     }
+
+    public static Pair<Integer, Integer> getMeasurementFromLocalPath(String path) {
+        File file = new File(path);
+        if (file.exists() && file.isFile()) {
+            String type = guessMimeType(file.getName()).type();
+            if (type.equals("image")) {
+                BitmapFactory.Options options = new BitmapFactory.Options();
+                options.inJustDecodeBounds = true;
+                BitmapFactory.decodeFile(path, options);
+                return Pair.create(options.outWidth, options.outHeight);
+            } else if (type.equals("video")) {
+                MediaMetadataRetriever retriever = new MediaMetadataRetriever();
+                retriever.setDataSource(path);
+                String widthS = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_WIDTH);
+                String heightS = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_HEIGHT);
+                retriever.release();
+                return Pair.create(Integer.valueOf(widthS), Integer.valueOf(heightS));
+            }
+        }
+        return Pair.create(null, null);
+    }
+
 }

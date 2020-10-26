@@ -1,5 +1,6 @@
 package com.sktlab.android.base.binder;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -12,6 +13,11 @@ import java.util.List;
 import me.drakeet.multitype.ItemViewBinder;
 
 public abstract class BaseItemViewBinder<T extends ViewBinding, ITEM> extends ItemViewBinder<ITEM, BaseItemViewBinder.BaseViewHolder<T>> {
+    protected final Context context;
+
+    public BaseItemViewBinder(Context context) {
+        this.context = context;
+    }
 
     @NonNull
     @Override
