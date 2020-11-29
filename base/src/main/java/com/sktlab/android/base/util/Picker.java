@@ -35,13 +35,14 @@ public class Picker {
     private static void pick(Matisse matisse, MimeTypes mimeTypes, int maxSelectable, String authority, boolean capture) {
         matisse.choose(mimeTypes == MimeTypes.IMAGE ? MimeType.ofImage() : mimeTypes == MimeTypes.VIDEO ? MimeType.ofVideo() : MimeType.ofAll())
                 .countable(maxSelectable != 1)
+                .showPreview(false)
                 .capture(capture)
                 .captureStrategy(new CaptureStrategy(true, authority))
                 .maxSelectable(maxSelectable)
                 .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
                 .thumbnailScale(0.85f)
-                .imageEngine(new GlideEngine())    // for glide-V4
-                .originalEnable(true)
+                .imageEngine(new GlideEngine())
+                .originalEnable(false)
                 .maxOriginalSize(10)
                 .autoHideToolbarOnSingleTap(true)
                 .showSingleMediaType(true)

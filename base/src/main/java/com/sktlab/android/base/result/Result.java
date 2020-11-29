@@ -38,4 +38,6 @@ public interface Result {
     Object getData();
 
     Code getCode();
+
+    String getMessage();
 }

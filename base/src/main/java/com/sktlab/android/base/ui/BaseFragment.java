@@ -31,13 +31,9 @@ import com.sktlab.android.base.util.Utils;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
-
 public abstract class BaseFragment<T extends ViewBinding> extends Fragment {
     protected static String TAG;
     protected T binding;
-    private Unbinder unbinder;
     private AlertDialog loadingDialog;
     private AppCompatTextView loadingText;
     private ProgressBar loadingPb;
@@ -54,7 +50,6 @@ public abstract class BaseFragment<T extends ViewBinding> extends Fragment {
         if (binding == null) {
             binding = getBinding(inflater, container);
             EventBus.getDefault().register(this);
-            unbinder = ButterKnife.bind(this, binding.getRoot());
             createView();
         }
         return binding.getRoot();
@@ -63,13 +58,13 @@ public abstract class BaseFragment<T extends ViewBinding> extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        setListeners();
         viewCreated();
     }
 
     @Override
     public void onDestroyView() {
         EventBus.getDefault().unregister(this);
-        unbinder.unbind();
         binding = null;
         super.onDestroyView();
     }
@@ -81,6 +76,8 @@ public abstract class BaseFragment<T extends ViewBinding> extends Fragment {
 
     protected void viewCreated() {
     }
+
+    protected abstract void setListeners();
 
     @SuppressWarnings("unused")
     @Subscribe

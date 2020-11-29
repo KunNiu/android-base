@@ -28,8 +28,6 @@ import com.sktlab.android.base.util.Utils;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
-import butterknife.ButterKnife;
-
 public abstract class BaseActivity<T extends ViewBinding> extends AppCompatActivity {
     protected T binding;
     private AlertDialog loadingDialog;
@@ -43,7 +41,7 @@ public abstract class BaseActivity<T extends ViewBinding> extends AppCompatActiv
         binding = getBinding();
         setContentView(binding.getRoot());
         EventBus.getDefault().register(this);
-        ButterKnife.bind(this);
+        setListeners();
     }
 
     @Override
@@ -53,7 +51,7 @@ public abstract class BaseActivity<T extends ViewBinding> extends AppCompatActiv
         loadingDialog = null;
     }
 
-    private void setStatusBar() {
+    protected void setStatusBar() {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         getWindow().setStatusBarColor(getStatusBarColor());
@@ -66,6 +64,8 @@ public abstract class BaseActivity<T extends ViewBinding> extends AppCompatActiv
     }
 
     protected abstract T getBinding();
+
+    protected abstract void setListeners();
 
     @SuppressWarnings("unused")
     @Subscribe

@@ -4,14 +4,25 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
+import com.sktlab.android.base.sample.databinding.ActivityMainBinding;
+import com.sktlab.android.base.ui.BaseActivity;
 import com.sktlab.android.base.util.Utils;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity<ActivityMainBinding> {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        Utils.isPhoneNumberValid("1", "cn");
+        showLoading();
+    }
+
+    @Override
+    protected ActivityMainBinding getBinding() {
+        return ActivityMainBinding.inflate(getLayoutInflater());
+    }
+
+    @Override
+    protected void setListeners() {
+
     }
 }

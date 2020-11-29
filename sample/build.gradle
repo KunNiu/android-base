@@ -32,7 +32,8 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'com.sktlab.android:base:1.0.1'
+//    implementation 'com.sktlab.android:base:1.0.1'
+    implementation project(':base')
     testImplementation deps.junit
     androidTestImplementation deps.android_test.ext
     androidTestImplementation deps.android_test.espresso

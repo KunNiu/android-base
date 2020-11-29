@@ -116,7 +116,6 @@ dependencies {
     implementation deps.apache_commons.lang
     implementation deps.apache_commons.validator
     implementation deps.eventbus
-    implementation deps.butterknife.butterknife
     implementation deps.pinyin
     implementation deps.gson
     implementation deps.okhttp.okhttp

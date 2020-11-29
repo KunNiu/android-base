@@ -14,6 +14,12 @@ public abstract class LazyLoadFragment<T extends ViewBinding> extends BaseFragme
         }
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        isFirstLoad = true;
+    }
+
     protected void loadData() {
     }
 }

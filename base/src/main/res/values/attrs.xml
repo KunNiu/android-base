@@ -5,4 +5,22 @@
         <attr name="selectColor" format="color" />
         <attr name="letterSize" format="dimension" />
     </declare-styleable>
+
+
+    <!-- MyProgressBar start -->
+    <declare-styleable name="MyProgressBar">
+        <attr name="type" format="enum">
+            <enum name="type_rect" value="0" />
+            <enum name="type_circle" value="1" />
+        </attr>
+        <attr name="progress_color" format="color" />
+        <attr name="background_color" format="color" />
+        <attr name="max_value" format="integer" />
+        <attr name="value" format="integer" />
+        <attr name="stroke_width" format="dimension" />
+        <attr name="stroke_round_cap" format="boolean" />
+        <attr name="android:textSize" />
+        <attr name="android:textColor" />
+    </declare-styleable>
+    <!-- MyProgressBar end -->
 </resources>

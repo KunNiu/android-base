@@ -50,6 +50,12 @@ public class ResultImp implements Result {
         return resultCode;
     }
 
+    @Override
+    public String getMessage() {
+        if (result != null)
+            return result.getMessage();
+        return null;
+    }
 
     public static Result unknown() {
         return new ResultImp(new Code(Code.UNKNOWN));

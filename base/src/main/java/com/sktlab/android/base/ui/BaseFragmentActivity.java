@@ -17,8 +17,6 @@ import com.sktlab.android.base.util.Utils;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
-import butterknife.ButterKnife;
-
 public abstract class BaseFragmentActivity<T extends ViewBinding> extends FragmentActivity {
     protected T binding;
 
@@ -29,7 +27,7 @@ public abstract class BaseFragmentActivity<T extends ViewBinding> extends Fragme
         binding = getBinding();
         setContentView(binding.getRoot());
         EventBus.getDefault().register(this);
-        ButterKnife.bind(this);
+        setListeners();
     }
 
     @Override
@@ -38,7 +36,7 @@ public abstract class BaseFragmentActivity<T extends ViewBinding> extends Fragme
         super.onDestroy();
     }
 
-    private void setStatusBar() {
+    protected void setStatusBar() {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         getWindow().setStatusBarColor(getStatusBarColor());
@@ -51,6 +49,8 @@ public abstract class BaseFragmentActivity<T extends ViewBinding> extends Fragme
     }
 
     protected abstract T getBinding();
+
+    protected abstract void setListeners();
 
     @SuppressWarnings("unused")
     @Subscribe

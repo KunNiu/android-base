@@ -26,4 +26,9 @@ public abstract class BaseEvent implements Result {
     public Object getData() {
         return result.getData();
     }
+
+    @Override
+    public String getMessage() {
+        return result.getMessage();
+    }
 }

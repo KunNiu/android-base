@@ -2,10 +2,8 @@ package com.sktlab.android.base.util;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.validator.routines.EmailValidator;
+import org.apache.commons.validator.routines.UrlValidator;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class StringUtil {
     //数字
@@ -29,6 +27,10 @@ public class StringUtil {
 
     public static boolean validateEmail(String email) {
         return EmailValidator.getInstance().isValid(email);
+    }
+
+    public static boolean validateUrl(String url) {
+        return UrlValidator.getInstance().isValid(url);
     }
 
     public static String substringAfterLast(final String str, final String separator) {
