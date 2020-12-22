@@ -85,11 +85,19 @@ public abstract class BaseFragment<T extends ViewBinding> extends Fragment {
     }
 
     public void toast(String message) {
-        Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show();
+        toast(message, Toast.LENGTH_LONG);
     }
 
     public void toast(@StringRes int resId) {
-        Toast.makeText(getContext(), getString(resId), Toast.LENGTH_LONG).show();
+        toast(resId, Toast.LENGTH_LONG);
+    }
+
+    public void toast(String message, int duration) {
+        Toast.makeText(requireContext(), message, duration).show();
+    }
+
+    public void toast(@StringRes int resId, int duration) {
+        Toast.makeText(requireContext(), getString(resId), duration).show();
     }
 
     @ColorInt

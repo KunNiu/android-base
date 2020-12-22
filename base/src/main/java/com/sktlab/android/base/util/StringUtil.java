@@ -1,9 +1,14 @@
 package com.sktlab.android.base.util;
 
+import androidx.annotation.NonNull;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.validator.routines.EmailValidator;
 import org.apache.commons.validator.routines.UrlValidator;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class StringUtil {
     //数字
@@ -45,5 +50,14 @@ public class StringUtil {
             return String.format("%.1f", number / 1000f) + "K";
         }
         return String.format("%.1f", number / 10000f) + "W";
+    }
+
+    public static String findNumbers(@NonNull String str) {
+        Pattern p = Pattern.compile("\\d+");
+        Matcher m = p.matcher(str);
+        if (m.find()) {
+            return m.group();
+        }
+        return null;
     }
 }
