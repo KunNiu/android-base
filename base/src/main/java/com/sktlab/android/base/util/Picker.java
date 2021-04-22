@@ -15,7 +15,6 @@ import com.zhihu.matisse.engine.impl.GlideEngine;
 import com.zhihu.matisse.internal.entity.CaptureStrategy;
 
 import java.util.List;
-import java.util.Objects;
 
 public class Picker {
     public static final int PICKER_REQUEST = 10001;
@@ -25,14 +24,22 @@ public class Picker {
     }
 
     public static void pick(@NonNull Activity activity, MimeTypes mimeTypes, @IntRange(from = 1, to = 9) int maxSelectable, boolean capture) {
-        pick(Matisse.from(activity), mimeTypes, maxSelectable, activity.getPackageName() + ".fileProvider", capture);
+        pick(activity, mimeTypes, maxSelectable, capture, -1);
+    }
+
+    public static void pick(@NonNull Activity activity, MimeTypes mimeTypes, @IntRange(from = 1, to = 9) int maxSelectable, boolean capture, int requestCode) {
+        pick(Matisse.from(activity), mimeTypes, maxSelectable, activity.getPackageName() + ".fileProvider", capture, requestCode);
     }
 
     public static void pick(@NonNull Fragment fragment, MimeTypes mimeTypes, @IntRange(from = 1, to = 9) int maxSelectable, boolean capture) {
-        pick(Matisse.from(fragment), mimeTypes, maxSelectable, fragment.requireActivity().getPackageName() + ".fileProvider", capture);
+        pick(fragment, mimeTypes, maxSelectable, capture, -1);
     }
 
-    private static void pick(Matisse matisse, MimeTypes mimeTypes, int maxSelectable, String authority, boolean capture) {
+    public static void pick(@NonNull Fragment fragment, MimeTypes mimeTypes, @IntRange(from = 1, to = 9) int maxSelectable, boolean capture, int requestCode) {
+        pick(Matisse.from(fragment), mimeTypes, maxSelectable, fragment.requireActivity().getPackageName() + ".fileProvider", capture, requestCode);
+    }
+
+    private static void pick(Matisse matisse, MimeTypes mimeTypes, int maxSelectable, String authority, boolean capture, int requestCode) {
         matisse.choose(mimeTypes == MimeTypes.IMAGE ? MimeType.ofImage() : mimeTypes == MimeTypes.VIDEO ? MimeType.ofVideo() : MimeType.ofAll())
                 .countable(maxSelectable != 1)
                 .showPreview(false)
@@ -46,7 +53,7 @@ public class Picker {
                 .maxOriginalSize(10)
                 .autoHideToolbarOnSingleTap(true)
                 .showSingleMediaType(true)
-                .forResult(PICKER_REQUEST);
+                .forResult(requestCode > 0 ? requestCode : PICKER_REQUEST);
     }
 
     public static List<String> obtainPathResult(Intent data) {

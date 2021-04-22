@@ -32,7 +32,6 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 public abstract class BaseFragment<T extends ViewBinding> extends Fragment {
-    protected static String TAG;
     protected T binding;
     private AlertDialog loadingDialog;
     private AppCompatTextView loadingText;
@@ -41,7 +40,6 @@ public abstract class BaseFragment<T extends ViewBinding> extends Fragment {
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        TAG = this.getClass().getSimpleName();
     }
 
     @Nullable
@@ -108,9 +106,9 @@ public abstract class BaseFragment<T extends ViewBinding> extends Fragment {
     public void replace(BaseActivity activity, @IdRes int resId, boolean addToBackStack) {
         FragmentTransaction transaction;
         transaction = activity.getSupportFragmentManager().beginTransaction();
-        transaction.replace(resId, this, TAG);
+        transaction.replace(resId, this, getClass().getSimpleName());
         if (addToBackStack)
-            transaction.addToBackStack(TAG);
+            transaction.addToBackStack(getClass().getSimpleName());
         transaction.commit();
     }
 

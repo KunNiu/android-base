@@ -4,6 +4,7 @@ package com.sktlab.android.base.result;
 public class ResultImp implements Result {
     private Result.Code resultCode;
     private Object data;
+    private String dataJson;
     private Result result;
 
     private ResultImp(Result result) {
@@ -33,7 +34,7 @@ public class ResultImp implements Result {
     public boolean isSuccess() {
         if (result != null)
             return result.isSuccess();
-        return resultCode != null && resultCode.getCode() == Result.Code.SUCCESS;
+        return resultCode != null && resultCode.code == Result.Code.SUCCESS;
     }
 
     @Override
@@ -41,6 +42,13 @@ public class ResultImp implements Result {
         if (result != null)
             return result.getData();
         return data;
+    }
+
+    @Override
+    public String getDataJson() {
+        if (result != null)
+            return result.getDataJson();
+        return null;
     }
 
     @Override

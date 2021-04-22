@@ -6,7 +6,6 @@ import android.database.Cursor;
 import android.graphics.BitmapFactory;
 import android.media.MediaMetadataRetriever;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
@@ -14,6 +13,8 @@ import android.provider.OpenableColumns;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 
 import androidx.annotation.ColorInt;
 import androidx.annotation.StringRes;
@@ -37,6 +38,23 @@ import java.text.DecimalFormat;
 import okhttp3.MediaType;
 
 public class Utils {
+    public static void showKeyboard(View view) {
+        InputMethodManager imm = (InputMethodManager) view.getContext()
+                .getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (imm != null) {
+            view.requestFocus();
+            imm.showSoftInput(view, 0);
+        }
+    }
+
+    public static void hideKeyboard(View view) {
+        InputMethodManager imm = (InputMethodManager) view.getContext()
+                .getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (imm != null) {
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+    }
+
     public static float dpToPx(Context context, float valueInDp) {
         DisplayMetrics metrics = context.getResources().getDisplayMetrics();
         return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, valueInDp, metrics);
@@ -203,22 +221,22 @@ public class Utils {
             }
             // DownloadsProvider
             else if (isDownloadsDocument(uri)) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    Cursor cursor = null;
-                    try {
-                        cursor = context.getContentResolver().query(uri, new String[]{MediaStore.MediaColumns.DISPLAY_NAME}, null, null, null);
-                        if (cursor != null && cursor.moveToFirst()) {
-                            String fileName = cursor.getString(0);
-                            String path = Environment.getExternalStorageDirectory().toString() + "/Download/" + fileName;
-                            if (!TextUtils.isEmpty(path)) {
-                                return path;
-                            }
-                        }
-                    } finally {
-                        if (cursor != null)
-                            cursor.close();
-                    }
-                }
+//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//                    Cursor cursor = null;
+//                    try {
+//                        cursor = context.getContentResolver().query(uri, new String[]{MediaStore.MediaColumns.DISPLAY_NAME}, null, null, null);
+//                        if (cursor != null && cursor.moveToFirst()) {
+//                            String fileName = cursor.getString(0);
+//                            String path = Environment.getExternalStorageDirectory().toString() + "/Download/" + fileName;
+//                            if (!TextUtils.isEmpty(path)) {
+//                                return path;
+//                            }
+//                        }
+//                    } finally {
+//                        if (cursor != null)
+//                            cursor.close();
+//                    }
+//                }
                 String id = DocumentsContract.getDocumentId(uri);
                 if (!TextUtils.isEmpty(id)) {
                     if (id.startsWith("raw:")) {

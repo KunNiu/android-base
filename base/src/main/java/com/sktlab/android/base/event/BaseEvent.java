@@ -28,6 +28,11 @@ public abstract class BaseEvent implements Result {
     }
 
     @Override
+    public String getDataJson() {
+        return result.getDataJson();
+    }
+
+    @Override
     public String getMessage() {
         return result.getMessage();
     }

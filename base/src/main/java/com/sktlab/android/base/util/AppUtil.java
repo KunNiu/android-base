@@ -1,12 +1,17 @@
 package com.sktlab.android.base.util;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.location.LocationManager;
+import android.os.Build;
+import android.provider.Settings;
 
 public class AppUtil {
     /**
@@ -81,7 +86,6 @@ public class AppUtil {
         return null;
     }
 
-
     /**
      * 获取图标 bitmap
      *
@@ -101,5 +105,30 @@ public class AppUtil {
         Drawable d = packageManager.getApplicationIcon(applicationInfo); //xxx根据自己的情况获取drawable
         BitmapDrawable bd = (BitmapDrawable) d;
         return bd.getBitmap();
+    }
+
+    public static boolean isLocationOpen(Context context) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+            return locationManager.isLocationEnabled();
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            try {
+                return Settings.Secure.getInt(context.getContentResolver(), Settings.Secure.LOCATION_MODE) != Settings.Secure.LOCATION_MODE_OFF;
+            } catch (Settings.SettingNotFoundException e) {
+                return false;
+            }
+        } else {
+            return !StringUtil.isEmpty(Settings.Secure.getString(context.getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED));
+        }
+    }
+
+    public static void goLocationSetting(Activity activity, int requestCode) {
+        Intent intent;
+        try {
+            intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+        } catch (Exception e) {
+            intent = new Intent(Settings.ACTION_SETTINGS);
+        }
+        activity.startActivityForResult(intent, requestCode);
     }
 }

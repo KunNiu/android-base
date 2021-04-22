@@ -4,9 +4,11 @@ import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
+import android.os.Build;
 
 import androidx.annotation.IntDef;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.annotation.StringRes;
 
 import java.lang.annotation.Retention;
@@ -74,6 +76,7 @@ public class NotificationUtil {
      *                              #IMPORTANCE_NONE}, {@link #IMPORTANCE_MIN}, {@link #IMPORTANCE_LOW}, {@link
      *                              #IMPORTANCE_DEFAULT} and {@link #IMPORTANCE_HIGH}.
      */
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public static void createNotificationChannel(
             Context context,
             String id,

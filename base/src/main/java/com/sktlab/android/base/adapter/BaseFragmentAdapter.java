@@ -9,15 +9,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BaseFragmentAdapter extends FragmentStateAdapter {
-    private List<Fragment> fragments;
+    private List<? extends Fragment> fragments;
     private List<Long> ids = new ArrayList<>();
 
-    public BaseFragmentAdapter(@NonNull Fragment fragment, List<Fragment> fragments) {
+    public BaseFragmentAdapter(@NonNull Fragment fragment, List<? extends Fragment> fragments) {
         super(fragment);
         this.fragments = fragments;
     }
 
-    public BaseFragmentAdapter(@NonNull FragmentActivity fragmentActivity, @NonNull List<Fragment> fragments) {
+    public BaseFragmentAdapter(@NonNull FragmentActivity fragmentActivity, @NonNull List<? extends Fragment> fragments) {
         super(fragmentActivity);
         this.fragments = fragments;
     }

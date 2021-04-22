@@ -10,15 +10,17 @@ public interface Result {
         public static final int UNKNOWN = -7000;
         public static final int SUCCESS = 7000;
         public static final int FAILED = 7001;
-        private int code;
+        public static final int NO_PERMISSION = 7002;
+        public static final int LOCATION_NOT_OPEN = 7003;
+        public int code;
 
-        protected Code(int code) {
+        public Code(int code) {
             this.code = code;
         }
 
-        public int getCode() {
-            return code;
-        }
+//        public int getCode() {
+//            return code;
+//        }
 
         @StringRes
         public int getStringRes() {
@@ -36,6 +38,8 @@ public interface Result {
     boolean isSuccess();
 
     Object getData();
+
+    String getDataJson();
 
     Code getCode();
 

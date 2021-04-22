@@ -1,6 +1,8 @@
 package com.sktlab.android.base.ui;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -28,11 +30,14 @@ import com.sktlab.android.base.util.Utils;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
+import java.lang.ref.WeakReference;
+
 public abstract class BaseActivity<T extends ViewBinding> extends AppCompatActivity {
     protected T binding;
     private AlertDialog loadingDialog;
     private AppCompatTextView loadingText;
     private ProgressBar loadingPb;
+    private WeakReference<ResultCallback> resultCallbackWeak;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -119,16 +124,58 @@ public abstract class BaseActivity<T extends ViewBinding> extends AppCompatActiv
         super.startActivity(intent);
     }
 
+    public void startActivityForResult(@SuppressLint("UnknownNullness") Intent intent, int requestCode, @Nullable ResultCallback resultCallback) {
+        if (resultCallback != null) {
+            if (resultCallbackWeak != null) {
+                resultCallbackWeak.clear();
+            }
+            resultCallbackWeak = new WeakReference<>(resultCallback);
+        }
+        super.startActivityForResult(intent, requestCode);
+    }
+
     public void startActivityForResult(Class<?> cls, int requestCode) {
         this.startActivityForResult(cls, requestCode, null);
     }
 
     public void startActivityForResult(Class<?> cls, int requestCode, Bundle bundle) {
+        this.startActivityForResult(cls, requestCode, bundle, null);
+    }
+
+    public void startActivityForResult(Class<?> cls, int requestCode, Bundle bundle, @Nullable ResultCallback resultCallback) {
+        if (resultCallback != null) {
+            if (resultCallbackWeak != null) {
+                resultCallbackWeak.clear();
+            }
+            resultCallbackWeak = new WeakReference<>(resultCallback);
+        }
         Intent intent = new Intent(this, cls);
         if (null != bundle) {
             intent.putExtra("bundle", bundle);
         }
         super.startActivityForResult(intent, requestCode);
+    }
+
+    public void startIntentSenderForResult(IntentSender intent, int requestCode, @Nullable @org.jetbrains.annotations.Nullable Intent fillInIntent, int flagsMask, int flagsValues, int extraFlags, @Nullable ResultCallback resultCallback) throws IntentSender.SendIntentException {
+        this.startIntentSenderForResult(intent, requestCode, fillInIntent, flagsMask, flagsValues, extraFlags, null, resultCallback);
+    }
+
+    public void startIntentSenderForResult(IntentSender intent, int requestCode, @Nullable @org.jetbrains.annotations.Nullable Intent fillInIntent, int flagsMask, int flagsValues, int extraFlags, @Nullable @org.jetbrains.annotations.Nullable Bundle options, @Nullable ResultCallback resultCallback) throws IntentSender.SendIntentException {
+        if (resultCallback != null) {
+            if (resultCallbackWeak != null) {
+                resultCallbackWeak.clear();
+            }
+            resultCallbackWeak = new WeakReference<>(resultCallback);
+        }
+        super.startIntentSenderForResult(intent, requestCode, fillInIntent, flagsMask, flagsValues, extraFlags, options);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable @org.jetbrains.annotations.Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCallbackWeak != null && resultCallbackWeak.get() != null) {
+            resultCallbackWeak.get().onResult(requestCode, resultCode, data);
+        }
     }
 
     public Bundle getBundle() {
@@ -177,5 +224,9 @@ public abstract class BaseActivity<T extends ViewBinding> extends AppCompatActiv
 
     public boolean isLoadingShowing() {
         return loadingDialog != null && loadingDialog.isShowing();
+    }
+
+    public interface ResultCallback {
+        void onResult(int requestCode, int resultCode, @Nullable @org.jetbrains.annotations.Nullable Intent data);
     }
 }

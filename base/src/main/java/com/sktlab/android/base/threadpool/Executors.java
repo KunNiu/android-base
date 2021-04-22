@@ -15,9 +15,11 @@ public class Executors {
     // For disk
     private static Executor diskIO;
     // Working on main thread
-    private static Executor mainThread;
+    private static MainThreadExecutor mainThread;
     // For network request
     private static Executor networkIO;
+    // For location request
+    private static Executor locationIO;
     // For websocket only
     private static Executor websocketIO;
     // For scheduled task
@@ -37,7 +39,7 @@ public class Executors {
         return diskIO;
     }
 
-    public static Executor main() {
+    public static MainThreadExecutor main() {
         if (mainThread == null) {
             synchronized (LOCK) {
                 if (mainThread == null) {
@@ -52,11 +54,34 @@ public class Executors {
         if (networkIO == null) {
             synchronized (LOCK) {
                 if (networkIO == null) {
-                    networkIO = java.util.concurrent.Executors.newFixedThreadPool(3);
+                    networkIO = java.util.concurrent.Executors.newFixedThreadPool(5);
                 }
             }
         }
         return networkIO;
+    }
+
+    // the nThreads will only effect at first time invoke.
+    public static Executor net(int nThreads) {
+        if (networkIO == null) {
+            synchronized (LOCK) {
+                if (networkIO == null) {
+                    networkIO = java.util.concurrent.Executors.newFixedThreadPool(nThreads);
+                }
+            }
+        }
+        return networkIO;
+    }
+
+    public static Executor location() {
+        if (locationIO == null) {
+            synchronized (LOCK) {
+                if (locationIO == null) {
+                    locationIO = java.util.concurrent.Executors.newSingleThreadExecutor();
+                }
+            }
+        }
+        return locationIO;
     }
 
     public static Executor websocket() {
@@ -81,12 +106,16 @@ public class Executors {
         return scheduledExecutorIO;
     }
 
-    private static class MainThreadExecutor implements Executor {
+    public static class MainThreadExecutor implements Executor {
         private Handler mainThreadHandler = new Handler(Looper.getMainLooper());
 
         @Override
         public void execute(@NonNull Runnable command) {
             mainThreadHandler.post(command);
+        }
+
+        public void execute(@NonNull Runnable command, long delayMillis) {
+            mainThreadHandler.postDelayed(command, delayMillis);
         }
     }
 
