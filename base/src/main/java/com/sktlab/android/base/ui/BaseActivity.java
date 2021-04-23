@@ -37,7 +37,7 @@ public abstract class BaseActivity<T extends ViewBinding> extends AppCompatActiv
     private AlertDialog loadingDialog;
     private AppCompatTextView loadingText;
     private ProgressBar loadingPb;
-    private WeakReference<ResultCallback> resultCallbackWeak;
+    private ResultCallback resultCallback;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -124,13 +124,17 @@ public abstract class BaseActivity<T extends ViewBinding> extends AppCompatActiv
         super.startActivity(intent);
     }
 
+    public void registerResultCallback(ResultCallback resultCallback) {
+        unregisterResultCallback();
+        this.resultCallback = resultCallback;
+    }
+
+    public void unregisterResultCallback() {
+        this.resultCallback = null;
+    }
+
     public void startActivityForResult(@SuppressLint("UnknownNullness") Intent intent, int requestCode, @Nullable ResultCallback resultCallback) {
-        if (resultCallback != null) {
-            if (resultCallbackWeak != null) {
-                resultCallbackWeak.clear();
-            }
-            resultCallbackWeak = new WeakReference<>(resultCallback);
-        }
+        registerResultCallback(resultCallback);
         super.startActivityForResult(intent, requestCode);
     }
 
@@ -143,12 +147,7 @@ public abstract class BaseActivity<T extends ViewBinding> extends AppCompatActiv
     }
 
     public void startActivityForResult(Class<?> cls, int requestCode, Bundle bundle, @Nullable ResultCallback resultCallback) {
-        if (resultCallback != null) {
-            if (resultCallbackWeak != null) {
-                resultCallbackWeak.clear();
-            }
-            resultCallbackWeak = new WeakReference<>(resultCallback);
-        }
+        registerResultCallback(resultCallback);
         Intent intent = new Intent(this, cls);
         if (null != bundle) {
             intent.putExtra("bundle", bundle);
@@ -161,20 +160,15 @@ public abstract class BaseActivity<T extends ViewBinding> extends AppCompatActiv
     }
 
     public void startIntentSenderForResult(IntentSender intent, int requestCode, @Nullable @org.jetbrains.annotations.Nullable Intent fillInIntent, int flagsMask, int flagsValues, int extraFlags, @Nullable @org.jetbrains.annotations.Nullable Bundle options, @Nullable ResultCallback resultCallback) throws IntentSender.SendIntentException {
-        if (resultCallback != null) {
-            if (resultCallbackWeak != null) {
-                resultCallbackWeak.clear();
-            }
-            resultCallbackWeak = new WeakReference<>(resultCallback);
-        }
+        registerResultCallback(resultCallback);
         super.startIntentSenderForResult(intent, requestCode, fillInIntent, flagsMask, flagsValues, extraFlags, options);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable @org.jetbrains.annotations.Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCallbackWeak != null && resultCallbackWeak.get() != null) {
-            resultCallbackWeak.get().onResult(requestCode, resultCode, data);
+        if (resultCallback != null){
+            resultCallback.onResult(requestCode, resultCode, data);
         }
     }
 
