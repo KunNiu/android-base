@@ -187,4 +187,8 @@ public abstract class BaseFragment<T extends ViewBinding> extends Fragment {
     public void finishActivity() {
         requireActivity().finish();
     }
+
+    public boolean onBackPressed(){
+        return false;
+    }
 }

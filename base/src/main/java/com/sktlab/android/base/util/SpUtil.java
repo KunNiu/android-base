@@ -81,4 +81,8 @@ public class SpUtil {
     public long getLong(@NonNull String key, long defValue) {
         return sp.getLong(key, defValue);
     }
+
+    public boolean contains(String key){
+        return sp.contains(key);
+    }
 }
