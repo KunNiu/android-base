@@ -113,7 +113,7 @@ dependencies {
     implementation deps.fragment
     implementation deps.phonenumber
     implementation deps.recyclerview
-    implementation deps.matisse
+//    implementation deps.matisse
     implementation deps.apache_commons.lang
     implementation deps.apache_commons.validator
     implementation deps.eventbus
@@ -126,4 +126,8 @@ dependencies {
     implementation deps.glide.transformations
     implementation deps.viewpager2
     implementation deps.multitype
+
+
+    // EasyPhotos
+    implementation 'com.github.HuanTanSheng:EasyPhotos:3.1.3'
 }
