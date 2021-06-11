@@ -38,6 +38,10 @@ import java.text.DecimalFormat;
 import okhttp3.MediaType;
 
 public class Utils {
+    public static boolean isMillisecond(long timestamp) {
+        return String.valueOf(Math.abs(timestamp)).length() >= 13;
+    }
+
     public static void showKeyboard(View view) {
         InputMethodManager imm = (InputMethodManager) view.getContext()
                 .getSystemService(Context.INPUT_METHOD_SERVICE);

@@ -52,8 +52,9 @@ public abstract class BaseActivity<T extends ViewBinding> extends AppCompatActiv
     @Override
     protected void onDestroy() {
         EventBus.getDefault().unregister(this);
-        super.onDestroy();
+        dismissLoading();
         loadingDialog = null;
+        super.onDestroy();
     }
 
     protected void setStatusBar() {
