@@ -1,11 +1,17 @@
 package com.sktlab.android.base.country;
 
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.DisplayMetrics;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.EditText;
 
 import androidx.annotation.Nullable;
@@ -14,6 +20,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.sktlab.android.base.R;
+import com.sktlab.android.base.util.Utils;
 
 import java.util.ArrayList;
 
@@ -76,5 +83,25 @@ public class CountryPicker extends DialogFragment {
             }
         });
         return root;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (getDialog() != null && getContext() != null) {
+            Window win = getDialog().getWindow();
+//            win.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            DisplayMetrics dm = new DisplayMetrics();
+            if (getActivity() != null) {
+                getActivity().getWindowManager().getDefaultDisplay().getMetrics(dm);
+
+                WindowManager.LayoutParams params = win.getAttributes();
+                params.gravity = Gravity.CENTER;
+                params.width = dm.widthPixels / 2;
+                params.height = dm.heightPixels / 3;
+//                params.horizontalMargin = Utils.dpToPx(getContext(), 100);
+                win.setAttributes(params);
+            }
+        }
     }
 }

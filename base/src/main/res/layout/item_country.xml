@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="32dp"
+    android:layout_height="48dp"
     android:gravity="center_vertical"
     android:orientation="horizontal"
     android:paddingLeft="16dp"
@@ -9,8 +9,8 @@
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/iv_flag"
-        android:layout_width="20dp"
-        android:layout_height="20dp" />
+        android:layout_width="24dp"
+        android:layout_height="24dp" />
 
     <Space
         android:layout_width="12dp"
@@ -22,7 +22,7 @@
         android:layout_height="wrap_content"
         android:minWidth="160dp"
         android:singleLine="true"
-        android:textSize="16sp" />
+        android:textSize="18sp" />
 
     <Space
         android:layout_width="0dp"
@@ -33,6 +33,6 @@
         android:id="@+id/tv_code"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="16sp" />
+        android:textSize="18sp" />
 
 </androidx.appcompat.widget.LinearLayoutCompat>
